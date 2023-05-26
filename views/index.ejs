@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Posts</title>
+</head>
+
+<body>
+    <form action="/api/posts" method="post">
+        <input type="text" name="content" placeholder="Write a post" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h1>All Posts</h1>
+    <% posts.forEach(post=> { %>
+        <div>
+            <p>
+                <%= post.content %>
+            </p>
+            <p><small>Posted on <%= formatDate(post.createdAt) %></small></p>
+        </div>
+        <% }) %>
+
+            <script>
+                function formatDate(dateString) {
+                    const date = new Date(dateString);
+                    const formattedDate = date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    });
+                    const formattedTime = date.toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false
+                    });
+                    return `${formattedDate} ${formattedTime}`;
+                }
+            </script>
+</body>
+
+</html>
