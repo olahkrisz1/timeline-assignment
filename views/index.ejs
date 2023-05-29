@@ -8,20 +8,33 @@
 
 <body>
     <form action="/api/posts" method="post">
-        <input type="text" name="content" placeholder="Write a post" required>
-        <button type="submit">Submit</button>
+        <input id='post-input' type="text" name="content" placeholder="Write a post" required>
+        <button id='post-btn' type="submit">Submit</button>
     </form>
 
     <h1>All Posts</h1>
     <% posts.forEach(post=> { %>
-        <div>
+        <div class="post">
             <p>
                 <%= post.content %>
             </p>
             <p><small>Posted on <%= formatDate(post.createdAt) %></small></p>
+
+            <% post.comments.forEach(comment=> { %>
+                <div class="comment">
+                    <p>
+                        <%= comment.content %>
+                    </p>
+                    <p><small>Posted on <%= formatDate(comment.createdAt) %></small></p>
+                </div>
+                <% }) %>
+
+                    <form action="/api/posts/<%= post._id %>/comments" method="post">
+                        <input type="text" name="content" placeholder="Write a comment" required>
+                        <button type="submit" id="comment-btn">Add comment</button>
+                    </form>
         </div>
         <% }) %>
-
             <script>
                 function formatDate(dateString) {
                     const date = new Date(dateString);

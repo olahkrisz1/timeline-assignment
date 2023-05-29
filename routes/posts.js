@@ -21,4 +21,27 @@ router.get("/posts", (req, res) => {
     .catch((err) => console.error("Error retrieving posts:", err));
 });
 
+// Create a comment for a post
+router.post("/posts/:postId/comments", async (req, res) => {
+  const postId = req.params.postId;
+  const { content } = req.body;
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    post.comments.push({ content });
+    await post.save();
+
+    // Redirect the user back to the homepage
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;
